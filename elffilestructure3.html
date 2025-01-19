@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unlocking the Mysteries of ELF: A Deep Dive into File Formats and Internals</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+    /*
+    .accordion > .card > .card-header {
+		background-color:#0f0080;
+		color: #fdff00;
+	}*/
+    
+    </style>
+</head>
+<body>	
+    <div class="container mt-5">
+        <div class="accordion " id="accordionExample">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Unlocking the Mysteries of ELF: A Deep Dive into File Formats and Internals
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                         ELF stands for Executable and Linkable Format. </br>
+                         It's a standard file format used for executables, object code, shared libraries, and core dumps. </br></br>
+                         The ELF format is flexible and extensible, making it widely adopted for UNIX and UNIX-like operating systems,</br>
+                         including Linux. It defines how an operating system loads and executes a program, as well as how it links </br>
+                         libraries and handles debugging information.</br></br>
+
+If you're diving into the world of programming or system internals, understanding the ELF format can be quite insightful! 
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            ELF File Structure
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                    <div class="card-body">                        
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>ELF Header</th>
+                                        <td>Identifies the file as an ELF file and contains metadata about the file.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Program Header Table</th>
+                                        <td>Describes the segments that the OS loader needs to load into memory.</td>
+                                    </tr>                                   
+						            <tr>                        				
+                                        <th>.text</th>
+                                        <td>Contains the actual executable code.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>.rodata</th>
+                                        <td>Contains read-only data, such as constants and string literals.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>.data</th>
+                                        <td>Contains initialized global and static variables.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>.bss</th>
+                                        <td>Contains uninitialized global and static variables.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>.symtab</th>
+                                        <td>Contains the symbol table, which holds information about functions and variables.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>.strtab</th>
+                                        <td>Contains the names of the symbols listed in the .symtab section.</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Section Header Table</th>
+                                        <td>Describes the sections of the file, including their sizes and offsets.</td>
+                                    </tr>
+                                </tbody>
+                            </table>                        
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingThree">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Lazarus Pascal program that demonstrates the various ELF internals
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <pre>program ELFSectionsDemo;
+
+program ELFSectionsDemo;
+
+const
+  constInt: Integer = 100;               // .rodata
+  constStr: PChar = 'Hello, World!';     // .rodata
+  constDouble: Double = 3.14;            // .rodata
+
+var
+  initializedVar: Integer = 42;          // .data
+  uninitializedVar: Integer;             // .bss
+  p: ^Integer;                           // Heap
+
+procedure MyProcedure;
+const
+  localConst: Integer = 50;              // Local constant
+var
+  localInt: Integer;                     // Local variable (stack)
+  localStr: String;                      // Local variable (stack)
+  localDouble: Double;                   // Local variable (stack)
+begin
+  localInt := 10;
+  localStr := 'Local String';
+  localDouble := 2.718;
+  
+  writeln('ConstInt        : ', ConstInt);
+  writeln('ConstStr        : ', ConstStr);
+  writeln('ConstDouble     : ', ConstDouble);
+  
+  writeln('InitializedVar  : ', InitializedVar);
+  
+  writeln('localConst      :', localConst);
+  Writeln('localInt        :', localInt);
+  writeln('localStr        :', localStr);
+  writeln('localDouble     :', localDouble);
+  
+  uninitializedVar:=64;
+  writeln('uninitializedVar:',uninitializedVar);
+  
+  
+end;
+
+begin
+  New(p);                                 // Allocate memory on the heap
+  p^ := 100;                              // Use the allocated memory
+  initializedVar := constInt + 1;
+  MyProcedure;
+  Dispose(p);                             // Deallocate the memory
+end.
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingFour">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Explanation
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
+                    <div class="card-body">
+                        <pre>Explanation Of Lazarus Pascal program that demonstrates the various ELF internals
+
+
+<strong>Constants:</strong>
+
+    constInt: Integer = 100; and other constants are stored in the .rodata section.
+
+<strong>Global Variables:</strong>
+
+    initializedVar: Integer = 42; is stored in the .data section because it is initialized.
+
+    uninitializedVar: Integer; is stored in the .bss section because it is uninitialized.
+
+<strong>Heap Variables:</strong>
+
+    p: ^Integer; is a pointer variable. The actual memory allocated using New(p); is managed on the heap,</br>
+    not part of the static sections.
+
+<strong>Procedure and Local Variables:</strong>
+
+    MyProcedure and its local variables are part of the .text section (code) and stack (local variables).
+
+    The local constant localConst: Integer = 50; and local variables localInt, localStr, and localDouble </br>
+    demonstrate how different types of data are managed in a procedure.
+
+<strong>Memory Management:</strong>
+
+    New(p); allocates memory on the heap.
+
+    Dispose(p); deallocates the memory.
+
+When you compile this program using Lazarus/FPC, it will generate an ELF executable that includes these sections. </br>
+You can use tools like readelf, objdump, and nm to inspect the sections and verify where each variable and constant is stored.
+</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingFive">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Using Free Pascal Compiler / FPC - Command Line Options 
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionExample">
+                    <div class="card-body">
+
+                        Using Free Pascal Compiler (FPC) from the command line, you can specify whether to include debug information </br>
+                        with the -g option or omit it by not including this option.
+                         <div class="container mt-5"> <table class="table table-bordered"> <thead> <tr> <th>Option</th> <th>Command</th> </tr> </thead> <tbody> <tr> <td>With Debug Information</td> <td><code>fpc -g &lt;your-program-file-name.pas&gt;</code></td> </tr> <tr> <td>Without Debug Information</td> <td><code>fpc &lt;your-program-file-name.pas&gt;</code></td> </tr> </tbody> </table> 
+                        
+
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingSix">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                            Build ELF File & Inspect File Internals 
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordionExample">
+                    <div class="card-body">                        
+                        <pre>
+<strong>Check program file type</strong>
+aruna@debian:~/pascal$ file ELFSectionDemo.pas
+<span style="color:green;">ELFSectionDemo.pas: ASCII text</span></br>
+
+<strong>Compile program without debug info</strong>
+aruna@debian:~/pascal$ fpc ELFSectionDemo.pas
+Free Pascal Compiler version 3.2.2 [2021/07/09] for x86_64
+Copyright (c) 1993-2021 by Florian Klaempfl and others
+Target OS: Linux for x86-64
+Compiling ELFSectionDemo.pas
+Linking ELFSectionDemo
+48 lines compiled, 0.0 sec</br>
+
+<strong>Check file type of created deb/executable</strong>
+aruna@debian:~/pascal$ file ELFSectionDemo
+<span style="color:green;">ELFSectionDemo: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, for GNU/Linux 2.4.0, stripped</span></br>
+
+<strong>Check program file sections using readelf -SW &lt;Your-program-name&gt;</strong>
+aruna@debian:~/pascal$ readelf -SW ELFSectionDemo 
+There are 8 section headers, starting at offset 0x2e8b0:
+
+Section Headers:
+  [Nr] Name              Type            Address          Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            0000000000000000 000000 000000 00      0   0  0
+  [ 1] .note.ABI-tag     NOTE            0000000000400190 000190 000020 00   A  0   0  4
+  [ 2] .text             PROGBITS        0000000000401000 001000 022c00 00  AX  0   0 16
+  [ 3] .rodata           PROGBITS        0000000000424000 024000 0005b0 00   A  0   0 16
+  [ 4] .data             PROGBITS        0000000000425000 025000 009840 00  WA  0   0 16
+  [ 5] .fpcdata          PROGBITS        000000000042e840 02e840 000030 00  WA  0   0 16
+  [ 6] .bss              NOBITS          000000000042e870 02e870 002518 00  WA  0   0 16
+  [ 7] .shstrtab         STRTAB          0000000000000000 02e870 00003b 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  l (large), p (processor specific)</br>
+  
+<strong>What is section[ 1] .note.ABI-tag and section [ 5] .fpcdata ?? </strong>
+
+If you have an ELF file and want to see the kernel info, you can use a tool like readelf. Here's how you would
+extract this information:
+
+<span style="color:green;">readelf -n &ltyour-elf-file&gt</span>
+
+This will display the note sections, including .note.ABI-tag. Look for the description field, and you'll find 
+the kernel version information there.</br>
+
+aruna@debian:~/pascal$ readelf -n ELFSectionDemo 
+
+Displaying notes found in: .note.ABI-tag
+  Owner                Data size 	Description
+  GNU                  0x00000010	NT_GNU_ABI_TAG (ABI version tag)
+  OS: Linux, ABI: 2.4.0
+
+The .note.ABI-tag section is a special section in ELF (Executable and Linkable Format) files
+It is used to store information about the Application Binary Interface (ABI) that the executable is compatible with
+This section is structured as a note section and contains metadata such as the earliest compatible kernel version
+Here's a brief overview of its structure:
+
+    Name: "GNU"
+    Type: 1
+    Description Size (descsz): At least 16 bytes
+    
+    Description (desc): The first 32-bit word is 0 (signifying a Linux executable), 
+    and the next three 32-bit words contain the earliest compatible kernel version
+
+
+
+
+                        </pre>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingSeven">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="false" aria-controls="collapseSeven">
+                            .note.ABI-tag  & .fpcdata 
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordionExample">
+                    <div class="card-body">
+                        readelf -n &ltyour-elf-file&gt
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingEight">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseEight" aria-expanded="false" aria-controls="collapseEight">
+                            Accordion Item #8
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Content for Accordion Item #8.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingNine">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseNine" aria-expanded="false" aria-controls="collapseNine">
+                            Accordion Item #9
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseNine" class="collapse" aria-labelledby="headingNine" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Content for Accordion Item #9.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTen">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                            Accordion Item #10
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTen" class="collapse" aria-labelledby="headingTen" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Content for Accordion Item #10.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingEleven">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseEleven" aria-expanded="false" aria-controls="collapseEleven">
+                            Accordion Item #11
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseEleven" class="collapse" aria-labelledby="headingEleven" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Content for Accordion Item #11.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwelve">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwelve" aria-expanded="false" aria-controls="collapseTwelve">
+                            Accordion Item #12
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseTwelve" class="collapse" aria-labelledby="headingTwelve" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Content for Accordion Item #12.
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingThirteen">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThirteen" aria-expanded="false" aria-controls="collapseThirteen">
+                            Accordion Item #13
+                        </button>
+                    </h2>
+                </div>
+                <div id="collapseThirteen" class="collapse" aria-labelledby="headingThirteen" data-parent="#accordionExample">
+                    <div class="card-body">
+                        Content for Accordion Item #13.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </br></br></br></br></br></br>
+    <a href="https://info.flagcounter.com/Qodx"><img src="https://s01.flagcounter.com/count2/Qodx/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+</body>
+</html>
